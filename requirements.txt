@@ -1,1 +1,1 @@
-faker>=20.0.0
+# No third-party dependencies: main.py uses only the Python standard library.

@@ -2,7 +2,6 @@ import argparse
 import logging
 import random
 import datetime
-from faker import Faker
 import sys
 
 # Configure logging
@@ -27,11 +26,14 @@ def setup_argparse():
     parser.add_argument("--randomize_time", action="store_true", help="Randomize the time portion of a datetime object.")
     return parser
 
-def shift_date(date_str, date_format, shift_days):
-    """Shifts a date by a random number of days."""
+def shift_date(date_str, date_format, shift_days, fixed_shift=None):
+    """Shifts a date by a number of days within the given range."""
     try:
         date_object = datetime.datetime.strptime(date_str, date_format)
-        random_shift = random.randint(-shift_days, shift_days)
+        # fixed_shift is the per-file shift drawn by process_data. Drawing a
+        # fresh shift per row would scramble the order of events and the gaps
+        # between them, which are exactly what this tool promises to preserve.
+        random_shift = fixed_shift if fixed_shift is not None else random.randint(-shift_days, shift_days)
         new_date = date_object + datetime.timedelta(days=random_shift)
         return new_date.strftime(date_format)
     except ValueError as e:
@@ -78,6 +80,9 @@ def randomize_time(date_str, date_format):
     
 def process_data(input_file, output_file, column_index, date_format, shift_days, bucket_interval, randomize_time_flag):
     """Processes the data in the input file, masks the date, and writes to the output file."""
+    # One shift for the whole file: every date moves by the same amount, so
+    # ordering and durations survive the masking unchanged.
+    file_shift = random.randint(-shift_days, shift_days) if shift_days > 0 else 0
     try:
         with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
             for line in infile:
@@ -97,7 +102,7 @@ def process_data(input_file, output_file, column_index, date_format, shift_days,
                 masked_date = None
 
                 if shift_days > 0:
-                    masked_date = shift_date(date_str, date_format, shift_days)
+                    masked_date = shift_date(date_str, date_format, shift_days, fixed_shift=file_shift)
                 elif bucket_interval:
                     masked_date = bucket_date(date_str, date_format, bucket_interval)
                 elif randomize_time_flag:
