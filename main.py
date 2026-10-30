@@ -21,7 +21,7 @@ def setup_argparse():
     parser.add_argument("--output_file", type=str,
                         help="Path to the output file to write the masked data.")
     parser.add_argument("--date_format", type=str, default="%Y-%m-%d",
-                        help="Format of the date in the input file (default: %Y-%m-%d).")
+                        help="Format of the date in the input file (default: %%Y-%%m-%%d).")
     parser.add_argument("--column_index", type=int, default=0,
                         help="Index of the column containing the date (default: 0).")
     parser.add_argument("--randomize_time", action="store_true", help="Randomize the time portion of a datetime object.")
