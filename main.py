@@ -48,7 +48,7 @@ def bucket_date(date_str, date_format, bucket_interval):
     try:
         date_object = datetime.datetime.strptime(date_str, date_format)
         if bucket_interval == 'day':
-            return date_object.strftime(date_format)  # No change, already at day level
+            return date_object.replace(hour=0, minute=0, second=0, microsecond=0).strftime(date_format)
         elif bucket_interval == 'week':
             start_of_week = date_object - datetime.timedelta(days=date_object.weekday())
             return start_of_week.strftime(date_format)
@@ -78,54 +78,84 @@ def randomize_time(date_str, date_format):
         logging.error(f"An unexpected error occurred: {e}")
         return None
     
+def _has_time_fields(date_format):
+    return any(code in date_format for code in ('%H', '%I', '%M', '%S', '%p', '%X', '%T', '%R'))
+
 def process_data(input_file, output_file, column_index, date_format, shift_days, bucket_interval, randomize_time_flag):
     """Processes the data in the input file, masks the date, and writes to the output file."""
-    # One shift for the whole file: every date moves by the same amount, so
-    # ordering and durations survive the masking unchanged.
-    file_shift = random.randint(-shift_days, shift_days) if shift_days > 0 else 0
+    import os
+    if os.path.realpath(input_file) == os.path.realpath(output_file):
+        logging.error("Output file must not be the same as the input file.")
+        return 1
+    # One shift for the whole file, drawn from a range that excludes zero:
+    # every date moves by the same non-zero amount, so ordering and
+    # durations survive the masking unchanged.
+    if shift_days > 0:
+        file_shift = random.choice([d for d in range(-shift_days, shift_days + 1) if d != 0])
+        logging.info(f"Shift drawn for this run: {file_shift} days.")
+    else:
+        file_shift = 0
     try:
-        with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
-            for line in infile:
-                line = line.strip()
-                if not line:
-                    outfile.write("\n")
-                    continue # Skip empty lines
-
-                parts = line.split(',') # Assumes comma-separated values.  Modify as needed.
-                if len(parts) <= column_index:
-                    logging.warning(f"Line does not have enough columns: {line}. Skipping.")
-                    outfile.write(line + "\n") # Write original line to output
-                    continue
-                
-                date_str = parts[column_index].strip()
-
-                masked_date = None
-
-                if shift_days > 0:
-                    masked_date = shift_date(date_str, date_format, shift_days, fixed_shift=file_shift)
-                elif bucket_interval:
-                    masked_date = bucket_date(date_str, date_format, bucket_interval)
-                elif randomize_time_flag:
-                    masked_date = randomize_time(date_str, date_format)
-                else:
-                    masked_date = date_str  # No masking applied
-
-                if masked_date is None:  # Error occurred during masking
-                    logging.warning(f"Failed to mask date in line: {line}. Writing original line to output.")
-                    outfile.write(line + "\n")
-                    continue
-                    
-                parts[column_index] = masked_date
-                outfile.write(','.join(parts) + '\n')
-
+        # Read the whole input before any output path is opened.
+        with open(input_file, 'r') as infile:
+            raw_lines = infile.readlines()
     except FileNotFoundError:
         logging.error(f"Input file not found: {input_file}")
-        return 1  # Indicate error
+        return 1
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
-        return 1 # Indicate error
-    
-    return 0 # Indicate success
+        return 1
+
+    if not raw_lines or all(not line.strip() for line in raw_lines):
+        logging.error("Input file is empty. No dates were changed.")
+        return 1
+
+    output_lines = []
+    changed = 0
+    for raw_line in raw_lines:
+        line = raw_line.strip()
+        if not line:
+            output_lines.append("\n")
+            continue
+        parts = line.split(',')
+        if len(parts) <= column_index:
+            logging.warning(f"Line does not have enough columns: {line}. Skipping.")
+            output_lines.append(line + "\n")
+            continue
+        date_str = parts[column_index].strip()
+        masked_date = None
+        if shift_days > 0:
+            masked_date = shift_date(date_str, date_format, shift_days, fixed_shift=file_shift)
+        elif bucket_interval:
+            masked_date = bucket_date(date_str, date_format, bucket_interval)
+        elif randomize_time_flag:
+            masked_date = randomize_time(date_str, date_format)
+        else:
+            masked_date = date_str
+        if masked_date is None:
+            logging.warning(f"Failed to mask date in line: {line}. Writing original line to output.")
+            output_lines.append(line + "\n")
+            continue
+        if masked_date != date_str:
+            changed += 1
+        parts[column_index] = masked_date
+        output_lines.append(','.join(parts) + '\n')
+
+    if changed == 0:
+        logging.error("No dates were changed.")
+        return 1
+
+    try:
+        with open(output_file, 'w') as outfile:
+            outfile.writelines(output_lines)
+    except FileNotFoundError:
+        logging.error(f"Input file not found: {input_file}")
+        return 1
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+        return 1
+
+    return 0
 
 def main():
     """Main function to parse arguments and process data."""
@@ -141,7 +171,21 @@ def main():
     if args.shift_days > 0 and args.bucket_interval:
         parser.error("--shift_days and --bucket_interval are mutually exclusive. Choose only one.")
         sys.exit(1)
-        
+
+    if args.randomize_time and not _has_time_fields(args.date_format):
+        logging.error("Cannot randomize time: the date format has no time fields. No dates were changed.")
+        sys.exit(1)
+
+    if args.bucket_interval == 'day' and not _has_time_fields(args.date_format):
+        logging.error("Cannot bucket by day: dates in a date only format are already at day level. No dates were changed.")
+        sys.exit(1)
+
+    if args.input_file and args.output_file:
+        import os
+        if os.path.realpath(args.input_file) == os.path.realpath(args.output_file):
+            logging.error("Output file must not be the same as the input file.")
+            sys.exit(1)
+
     if args.input_file and args.output_file:
         result = process_data(args.input_file, args.output_file, args.column_index, args.date_format,
                                 args.shift_days, args.bucket_interval, args.randomize_time)

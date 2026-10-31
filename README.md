@@ -19,5 +19,9 @@ Masks or modifies time-related data, such as timestamps or date ranges, while pr
 - `--column_index`: No description provided
 - `--randomize_time`: Randomize the time portion of a datetime object.
 
+The output file must not be the input file. A run that names the same file for both, in any spelling that resolves to the same path, is refused at exit 1 before any file is opened. The input is read in full before any output path is opened in every run.
+
+A run with --randomize_time whose date format has no time fields is rejected at exit 1, and a --bucket_interval day run on a date only format is rejected at exit 1, because neither can change a value. The shift is drawn from the range excluding zero and the drawn shift is logged on every shift run. An empty input exits 1, and a run that changes no dates exits 1 with a plain no dates were changed line and no complete log.
+
 ## License
 Copyright (c) ShadowGuardAI
