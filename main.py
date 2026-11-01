@@ -50,6 +50,10 @@ def bucket_date(date_str, date_format, bucket_interval):
         if bucket_interval == 'day':
             return date_object.replace(hour=0, minute=0, second=0, microsecond=0).strftime(date_format)
         elif bucket_interval == 'week':
+            # weekday() makes Monday the start of the week. Subtracting
+            # whole days keeps the time of day untouched, so with a datetime
+            # format the week bucket still carries each row's original
+            # clock time; only the month and day branches flatten anything.
             start_of_week = date_object - datetime.timedelta(days=date_object.weekday())
             return start_of_week.strftime(date_format)
         elif bucket_interval == 'month':
@@ -112,6 +116,11 @@ def process_data(input_file, output_file, column_index, date_format, shift_days,
 
     output_lines = []
     changed = 0
+    # The parsing here is a plain split on commas, not a CSV reader. A
+    # quoted field containing a comma throws the column index off for that
+    # row, and each line is stripped and rejoined, so spacing inside a row
+    # does not survive exactly. For a flat export with one date column this
+    # holds up; for quoted CSV it does not, and I will not pretend it does.
     for raw_line in raw_lines:
         line = raw_line.strip()
         if not line:
@@ -124,6 +133,11 @@ def process_data(input_file, output_file, column_index, date_format, shift_days,
             continue
         date_str = parts[column_index].strip()
         masked_date = None
+        # This elif chain picks exactly one operation per line, in the
+        # order shift, bucket, randomize. Main only forbids shift with
+        # bucket, so --shift_days with --randomize_time is accepted at the
+        # door and the randomize flag then never runs. I note it because
+        # the help text presents the three as options that can combine.
         if shift_days > 0:
             masked_date = shift_date(date_str, date_format, shift_days, fixed_shift=file_shift)
         elif bucket_interval:
@@ -133,6 +147,11 @@ def process_data(input_file, output_file, column_index, date_format, shift_days,
         else:
             masked_date = date_str
         if masked_date is None:
+            # A date that will not parse is written out exactly as it came
+            # in. One bad row does not fail a mixed file: as long as some
+            # other row changed, the run succeeds with the unparseable date
+            # sitting in the output in the clear. Only a file where nothing
+            # changed at all fails, on the count check after the loop.
             logging.warning(f"Failed to mask date in line: {line}. Writing original line to output.")
             output_lines.append(line + "\n")
             continue
