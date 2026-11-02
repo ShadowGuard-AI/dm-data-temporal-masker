@@ -3,164 +3,119 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dm Data Temporal Masker: what it is, how it runs, where it stops</title>
-<meta name="description" content="Dm Data Temporal Masker is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>dm-data-temporal-masker: Pastel Maker's Dust Laboratory</title>
 <style>
-:root {
-  --bg: #121418; --panel: #1c2028; --ink: #e8ecf0;
-  --mut: #252b36;
-  --acc: #5cc8e0; --acc2: #f0a05c;
-  --line: #1c2028;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: Verdana, Geneva, sans-serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Lucida Console', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face { font-family: "Permanent Marker"; src: url("fonts/PermanentMarker.ttf") format("truetype"); }
+@font-face { font-family: "Alegreya Sans"; src: url("fonts/AlegreyaSans.ttf") format("truetype"); }
+body { background: #efe6cf; color: #2a2522; font-family: "Alegreya Sans", sans-serif; margin: 0; }
+header, main { max-width: 960px; margin: 0 auto; padding: 24px; }
+h1, h2 { font-family: "Permanent Marker", cursive; color: #1a1614; }
+section { background: #dcdee0; background: rgba(172,175,178,0.28); border: 2px solid #1a1614; border-radius: 6px; padding: 20px 24px; margin: 22px 0; }
+.marker { color: #c62c26; font-size: 22px; }
+button { background: #f3e9d3; border: 3px solid #1a1614; border-radius: 40px 8px 40px 8px; font-family: "Permanent Marker", cursive; padding: 10px 22px; cursor: pointer; }
+button:hover { background: #f8efdb; }
+button:active { background: linear-gradient(90deg, #c62c26 0 18%, #f3e9d3 18%); }
+button:focus-visible, a:focus-visible { outline: 4px double #c62c26; outline-offset: 3px; }
+a { color: #1a1614; } a:hover { color: #c62c26; }
+.refusal { border-top: 10px solid #c62c26; }
+pre { white-space: pre-wrap; background: #f8f3e2; padding: 16px; border: 1px solid #1a1614; overflow-x: auto; }
+img { max-width: 100%; }
+label { font-family: "Permanent Marker", cursive; }
 </style>
 </head>
-<body class="layout-split">
-<!-- This page exists for dm-data-temporal-masker alone: the layout (split-hero),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
-<header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Dm Data Temporal Masker logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Dm Data Temporal Masker</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/dm-data-temporal-masker">github.com/ShadowGuard-AI/dm-data-temporal-masker</a></p>
+<body>
+<header>
+<h1>dm-data-temporal-masker: Pastel Maker's Dust Laboratory</h1>
+<img src="intro-banner.png" alt="One peeled pastel stick where north light first touches the rolling slab, presses and knives behind, no writing anywhere">
+<p><a href="#record">&#9874; The preserved record at the foot of this page</a></p>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/dm-data-temporal-masker">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Dm Data Temporal Masker is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Dm Data Temporal Masker: 5 files, 196 counted
-          lines across Python 172, Markdown 23, Text 1. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/dm-data-temporal-masker.git<br>$ cd dm-data-temporal-masker</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 8 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>logging.basicConfig(level=logging.INFO, format=&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;)
+<section>
+<h2><span class="marker">&#9679;</span> Pastel stick, ground first: the job</h2>
+<img src="logo.png" alt="A lone pastel stick, paper skin torn back, red heart exposed, powder smudge fanning across the bench">
+<p>Masking, modifying time related data, timestamps and date ranges, with temporal relationships kept intact while values move: order of events, durations. Random offset shifting, or bucketing into wider intervals: days, weeks, months, consistency held across related records. The family sentence: tools that generate or mask sensitive data using realistic looking yet meaningless values. No timestamp belonging to anyone is printed here, and no shift figure is invented here or anywhere across this site.</p>
+<p><button type="button">Mask the Times</button></p>
+<label for="input-file">Input File</label>
+<input id="input-file" type="text" placeholder="Input File">
+</section>
+<section>
+<h2><span class="marker">&#9679;</span> Gouge and timber: fetching, with one openly declared repair</h2>
+<p><code>git clone https://github.com/ShadowGuard-AI/dm-data-temporal-masker</code> <strong>[correction]</strong></p>
+<p>Confession, printed directly underneath: the printed README spelling omits that hyphen, so literal followers of the README line land at a differently named house. The corrected wording above wears its correction tag openly and is not disguised as original phrasing.</p>
+</section>
+<section>
+<h2><span class="marker">&#9679;</span> Chalk on slate: the invocation silhouette</h2>
+<img src="banner.png" alt="Dawn in the laboratory, jar labels spun wallward, the repository name chalked on the slate over the rolling slab">
+<p><code>./dm-data-temporal-masker [params]</code>, program leading, bracketed parameters trailing. The source offers zero worked calls, so this plate's sample line stays empty instead of costuming a fabricated run in laboratory clothing:</p>
+<p class="sample-line"></p>
+</section>
+<section>
+<h2><span class="marker">&#9679;</span> Pigment and paper: the controls, racked in README order</h2>
+<ul>
+<li><code>-h</code>: Show help message and exit</li>
+<li><code>--shift_days</code>: No description provided. Absence, printed at full size: no description was provided for this flag.</li>
+<li><code>--bucket_interval</code>: No description provided. Absence, printed at full size: no description was provided for this flag. The bucket choices named elsewhere are day, week and month intervals only.</li>
+<li><code>--input_file</code>: Path to the input file containing time-related data.</li>
+<li><code>--output_file</code>: Path to the output file to write the masked data.</li>
+<li><code>--date_format</code>: No description provided. Absence, printed at full size: no description was provided for this flag, and no format string is written here.</li>
+<li><code>--column_index</code>: No description provided. Absence, printed at full size: no description was provided for this flag, and no column position is picked here.</li>
+<li><code>--randomize_time</code>: Randomize the time portion of a datetime object.</li>
+</ul>
+<p>Four missing descriptions are repeated as holes. Nobody patches them. The shift unit stays unguessed.</p>
+</section>
+<section class="refusal">
+<h2><span class="marker">&#9679;</span> Iron and slate: Output Never Equals Input</h2>
+<h3>Runs That Change Nothing Are Refused</h3>
+<p>The output file must never equal the input file. A run that names the same file for both slots, in whatever spelling resolves onto the same path, is refused at exit 1 ahead of any file opening. The input gets read fully ahead of any output path opening during every run.</p>
+<p>A run with --randomize_time paired with a date format lacking time fields is rejected at exit 1, because it cannot change a value. A --bucket_interval day run paired with a date only format is rejected at exit 1, for the same reason.</p>
+<p>Shift numbers are drawn from a range excluding zero, and the drawn shift is logged during every shift run. Two limits stay open and unstated, recorded as absences at full size: the shift range itself is not stated in the source, and the log destination is not stated in the source.</p>
+<p>Empty input exits 1. A run changing zero dates exits 1, carrying a plain no dates were changed line, with a complete log absent.</p>
+</section>
+<section>
+<h2><span class="marker">&#9679;</span> Two sample jars, shelved separately: the licences</h2>
+<p>Sample jar one: the repository LICENSE itself, MIT terms. Its holder is described by outline only on this site: a pen name leading, a bracketed given name shrunk to a lone initial trailing it, a handle wrapped in parentheses at the tail. The holder wording is not copied here.</p>
+<p>Sample jar two, wearing site correction labelling: <code>Copyright (c) ShadowGuard-AI</code> <strong>[correction]</strong>. The published README original used the unhyphenated form, preserved verbatim in the record below; this respelled line is a site correction, not the original.</p>
+</section>
+<section>
+<h2><span class="marker">&#9679;</span> Dust on sleeves: the dust shelf</h2>
+<img src="scene.svg" alt="Animated laboratory scene in three bands: drifting powder, a hand rolling a stick a quarter turn, a hand flipping a palette knife">
+<p>House ritual, copied by zero sibling sites. Search engine arrivals receive a single pigment jar per visit; the whole shelf is never dumped out at once. One jar uncapped, contents read exhaustively, lid screwed home ahead of any subsequent jar budging.</p>
+<p>Order hunters receive the relationship jar: order of events and durations survive masking, worded exactly thus.</p>
+<p>Refusal hunters receive paired rejected run jars: a time free format beside a day bucket atop a date only format, exit 1 stamped across both lids.</p>
+<p>Proof hunters receive an empty jar beside an unchanged jar: empty input, and a run changing zero dates, both exiting 1, the latter carrying its plain line plus its missing complete log, explained.</p>
+<p>Students, archivists, shift workers rebuilding rotas for coursework, and analysts facing timestamp columns against deadlines: shelf discipline serves everybody identically. Dust coating sleeves, pigment buried underneath fingernails, north light guttering gradually above the slab.</p>
+</section>
+<section id="record">
+<h2><span class="marker">&#9679;</span> Slab stone, last: the preserved record</h2>
+<p>The live README, verbatim:</p>
+<pre>![Banner](banner.png)
 
-def setup_argparse():
-    &quot;&quot;&quot;Sets up the argument parser for the command-line interface.&quot;&quot;&quot;
-    parser = argparse.ArgumentParser(description=&quot;Masks or modifies time-related data while preserving temporal relationships.&quot;)
+# dm-data-temporal-masker
+Masks or modifies time-related data, such as timestamps or date ranges, while preserving temporal relationships (e.g., order of events, durations). Can shift time values by a random offset or bucket them into broader time intervals (e.g., days, weeks, months) while ensuring consistency across related records. - Focused on Tools designed to generate or mask sensitive data with realistic-looking but meaningless values
 
-    parser.add_argument(&quot;--shift_days&quot;, type=int, default=0,
-                        help=&quot;Shift dates by a random number of days (positive or negative).&quot;)
-    parser.add_argument(&quot;--bucket_interval&quot;, type=str, choices=[&#x27;day&#x27;, &#x27;week&#x27;, &#x27;month&#x27;],
-                        help=&quot;Bucket dates into broader time intervals (day, week, month).&quot;)
-    parser.add_argument(&quot;--input_file&quot;, type=str,
-                        help=&quot;Path to the input file containing time-related data.&quot;)
-    parser.add_argument(&quot;--output_file&quot;, type=str,
-                        help=&quot;Path to the output file to write the masked data.&quot;)
-    parser.add_argument(&quot;--date_format&quot;, type=str, default=&quot;%Y-%m-%d&quot;,
-                        help=&quot;Format of the date in the input file (default: %%Y-%%m-%%d).&quot;)
-    parser.add_argument(&quot;--column_index&quot;, type=int, default=0,
-                        help=&quot;Index of the column containing the date (default: 0).&quot;)
-    parser.add_argument(&quot;--randomize_time&quot;, action=&quot;store_true&quot;, help=&quot;Randomize the time portion of a datetime object.&quot;)
-    return parser
+## Install
+`git clone https://github.com/ShadowGuardAI/dm-data-temporal-masker`
 
-def shift_date(date_str, date_format, shift_days, fixed_shift=None):</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>172</td></tr>
-        <tr><td><code>README.md</code></td><td>23</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>1</td></tr>
-        <tr><td><code>banner.png</code></td><td>0</td></tr>
-        <tr><td><code>logo.png</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">setup_argparse, shift_date, bucket_date, randomize_time, process_data, main</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/dm-data-temporal-masker/tree/main/dm-data-temporal-masker-Visuals">dm-data-temporal-masker-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Dm Data Temporal Masker">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Dm Data Temporal Masker">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Dm Data Temporal Masker">
-        </div>
-      </section>
-    </div>
-  </section>
+## Usage
+`./dm-data-temporal-masker [params]`
+
+## Parameters
+- `-h`: Show help message and exit
+- `--shift_days`: No description provided
+- `--bucket_interval`: No description provided
+- `--input_file`: Path to the input file containing time-related data.
+- `--output_file`: Path to the output file to write the masked data.
+- `--date_format`: No description provided
+- `--column_index`: No description provided
+- `--randomize_time`: Randomize the time portion of a datetime object.
+
+The output file must not be the input file. A run that names the same file for both, in any spelling that resolves to the same path, is refused at exit 1 before any file is opened. The input is read in full before any output path is opened in every run.
+
+A run with --randomize_time whose date format has no time fields is rejected at exit 1, and a --bucket_interval day run on a date only format is rejected at exit 1, because neither can change a value. The shift is drawn from the range excluding zero and the drawn shift is logged on every shift run. An empty input exits 1, and a run that changes no dates exits 1 with a plain no dates were changed line and no complete log.
+
+## License
+Copyright (c) ShadowGuardAI</pre>
+</section>
 </main>
-<footer>
-  <p>Dm Data Temporal Masker is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
-</footer>
 </body>
 </html>

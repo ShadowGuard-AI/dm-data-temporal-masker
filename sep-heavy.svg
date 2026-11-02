@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 28" width="1200" height="28" role="img" aria-label="Major separator: stitch perforations materialising dot after dot">
+  <rect x="0" y="0" width="1200" height="28" fill="#f3e9d3"/>
+  <g fill="#1a1614">
+    <circle cx="30" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="0s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="90" cy="14" r="4" fill="#c62c26"><animate attributeName="opacity" values="0;1" begin="0.15s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="150" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="0.3s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="210" cy="14" r="4" fill="#c49a5c"><animate attributeName="opacity" values="0;1" begin="0.45s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="270" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="0.6s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="330" cy="14" r="4" fill="#c62c26"><animate attributeName="opacity" values="0;1" begin="0.75s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="390" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="0.9s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="450" cy="14" r="4" fill="#acafb2"><animate attributeName="opacity" values="0;1" begin="1.05s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="510" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="1.2s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="570" cy="14" r="4" fill="#c62c26"><animate attributeName="opacity" values="0;1" begin="1.35s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="630" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="1.5s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="690" cy="14" r="4" fill="#c49a5c"><animate attributeName="opacity" values="0;1" begin="1.65s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="750" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="1.8s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="810" cy="14" r="4" fill="#c62c26"><animate attributeName="opacity" values="0;1" begin="1.95s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="870" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="2.1s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="930" cy="14" r="4" fill="#acafb2"><animate attributeName="opacity" values="0;1" begin="2.25s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="990" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="2.4s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="1050" cy="14" r="4" fill="#c62c26"><animate attributeName="opacity" values="0;1" begin="2.55s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="1110" cy="14" r="4"><animate attributeName="opacity" values="0;1" begin="2.7s" dur="0.1s" fill="freeze"/></circle>
+    <circle cx="1170" cy="14" r="4" fill="#c49a5c"><animate attributeName="opacity" values="0;1" begin="2.85s" dur="0.1s" fill="freeze"/></circle>
+  </g>
+</svg>

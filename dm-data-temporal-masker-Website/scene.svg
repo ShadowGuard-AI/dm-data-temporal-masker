@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360" role="img" aria-label="Pastel makers dust laboratory scene in three bands">
+  <rect x="0" y="0" width="1200" height="360" fill="#f3e9d3"/>
+  <!-- Far band: proof presses and shelving stay planted; powder drifts in north light -->
+  <rect x="0" y="0" width="1200" height="118" fill="#eee3c8"/>
+  <rect x="60" y="26" width="300" height="10" fill="#c49a5c" stroke="#1a1614" stroke-width="2"/>
+  <g fill="#e0dac6" stroke="#1a1614" stroke-width="2">
+    <rect x="84" y="40" width="46" height="42"/><rect x="154" y="40" width="46" height="42"/><rect x="224" y="40" width="46" height="42"/><rect x="294" y="40" width="46" height="42"/>
+  </g>
+  <g fill="#acafb2" stroke="#1a1614" stroke-width="2">
+    <rect x="90" y="30" width="34" height="10"/><rect x="160" y="30" width="34" height="10"/><rect x="230" y="30" width="34" height="10"/><rect x="300" y="30" width="34" height="10"/>
+  </g>
+  <g stroke="#1a1614" stroke-width="5" fill="none">
+    <path d="M520 108 V52 M492 52 H548 M492 108 H548"/>
+    <path d="M700 108 V52 M672 52 H728 M672 108 H728"/>
+  </g>
+  <circle cx="520" cy="40" r="14" fill="#acafb2" stroke="#1a1614" stroke-width="3"/>
+  <circle cx="700" cy="40" r="14" fill="#acafb2" stroke="#1a1614" stroke-width="3"/>
+  <rect x="880" y="18" width="260" height="86" fill="#e8e2cd" stroke="#1a1614" stroke-width="4"/>
+  <path d="M967 18 V104 M1053 18 V104 M880 61 H1140" stroke="#1a1614" stroke-width="3"/>
+  <g fill="#c62c26" opacity="0.55">
+    <circle cx="420" cy="30" r="4"><animate attributeName="cx" values="420;470;420" dur="11s" repeatCount="indefinite"/><animate attributeName="cy" values="30;52;30" dur="11s" repeatCount="indefinite"/></circle>
+    <circle cx="450" cy="66" r="3"><animate attributeName="cx" values="450;398;450" dur="14s" repeatCount="indefinite"/><animate attributeName="cy" values="66;44;66" dur="14s" repeatCount="indefinite"/></circle>
+    <circle cx="790" cy="36" r="3.5"><animate attributeName="cx" values="790;838;790" dur="12s" repeatCount="indefinite"/><animate attributeName="cy" values="36;58;36" dur="12s" repeatCount="indefinite"/></circle>
+  </g>
+  <!-- Middle band: rolling slab; a hand rolls one stick a quarter turn and halts; tray sticks keep colour order -->
+  <rect x="0" y="118" width="1200" height="122" fill="#d6bc8e"/>
+  <rect x="0" y="118" width="1200" height="14" fill="#c49a5c" stroke="#1a1614" stroke-width="2"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 330 182; 24 330 182; 24 330 182" keyTimes="0; 0.35; 1" dur="6s" repeatCount="indefinite"/>
+    <rect x="180" y="164" width="300" height="36" rx="8" fill="#c62c26" stroke="#1a1614" stroke-width="3"/>
+    <rect x="404" y="164" width="76" height="36" fill="#d3d5d7" stroke="#1a1614" stroke-width="3"/>
+    <rect x="462" y="164" width="10" height="36" fill="#c49a5c" stroke="#1a1614" stroke-width="2"/>
+  </g>
+  <path d="M150 150 q26 -22 52 -6 l-8 30 q-30 10 -52 -4 z" fill="#c49a5c" stroke="#1a1614" stroke-width="3"/>
+  <g stroke="#1a1614" stroke-width="2">
+    <rect x="760" y="150" width="360" height="44" fill="#c49a5c"/>
+    <line x1="832" y1="150" x2="832" y2="194"/><line x1="904" y1="150" x2="904" y2="194"/><line x1="976" y1="150" x2="976" y2="194"/><line x1="1048" y1="150" x2="1048" y2="194"/>
+    <rect x="776" y="164" width="40" height="14" rx="6" fill="#c62c26"/>
+    <rect x="848" y="164" width="40" height="14" rx="6" fill="#acafb2"/>
+    <rect x="920" y="164" width="40" height="14" rx="6" fill="#c49a5c"/>
+    <rect x="992" y="164" width="40" height="14" rx="6" fill="#c62c26"/>
+    <rect x="1064" y="164" width="40" height="14" rx="6" fill="#acafb2"/>
+  </g>
+  <!-- Near band: side bench; the same hand lifts a palette knife, flips it blade up, replaces it -->
+  <rect x="0" y="240" width="1200" height="120" fill="#e9dcbc"/>
+  <rect x="60" y="300" width="620" height="14" fill="#c49a5c" stroke="#1a1614" stroke-width="2"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 300 292; -38 300 292; 0 300 292" keyTimes="0; 0.4; 1" dur="7s" repeatCount="indefinite"/>
+    <polygon points="220,292 292,284 300,294 230,302" fill="#acafb2" stroke="#1a1614" stroke-width="2"/>
+    <line x1="298" y1="289" x2="332" y2="286" stroke="#1a1614" stroke-width="7"/>
+  </g>
+  <path d="M336 268 q26 -20 50 -4 l-8 28 q-28 10 -50 -4 z" fill="#c49a5c" stroke="#1a1614" stroke-width="3"/>
+  <polygon points="820,306 872,268 924,306" fill="#c62c26" stroke="#1a1614" stroke-width="2"/>
+  <polygon points="972,306 1012,276 1052,306" fill="#c62c26" stroke="#1a1614" stroke-width="2"/>
+  <text x="60" y="52" font-family="sans-serif" font-size="1" fill="#f3e9d3">.</text>
+</svg>
